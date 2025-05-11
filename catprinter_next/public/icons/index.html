@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>临时图标生成器</title>
+  <style>
+    canvas {
+      border: 1px solid #ddd;
+      margin: 10px;
+    }
+  </style>
+</head>
+<body>
+  <h1>临时图标生成器</h1>
+  <p>请右键点击下方图标并保存：</p>
+  
+  <canvas id="icon192" width="192" height="192"></canvas>
+  <p>icon-192.png</p>
+  
+  <canvas id="icon512" width="512" height="512"></canvas>
+  <p>icon-512.png</p>
+  
+  <script>
+    // 绘制192x192图标
+    const canvas192 = document.getElementById('icon192');
+    const ctx192 = canvas192.getContext('2d');
+    
+    // 背景
+    ctx192.fillStyle = '#3182ce';
+    ctx192.fillRect(0, 0, 192, 192);
+    
+    // 绘制简单的猫图标
+    ctx192.fillStyle = 'white';
+    // 猫头
+    ctx192.beginPath();
+    ctx192.arc(96, 96, 60, 0, Math.PI * 2);
+    ctx192.fill();
+    
+    // 猫耳朵
+    ctx192.fillStyle = '#3182ce';
+    ctx192.beginPath();
+    ctx192.moveTo(60, 60);
+    ctx192.lineTo(40, 20);
+    ctx192.lineTo(80, 40);
+    ctx192.fill();
+    
+    ctx192.beginPath();
+    ctx192.moveTo(132, 60);
+    ctx192.lineTo(152, 20);
+    ctx192.lineTo(112, 40);
+    ctx192.fill();
+    
+    // 猫眼睛
+    ctx192.fillStyle = '#3182ce';
+    ctx192.beginPath();
+    ctx192.arc(76, 86, 10, 0, Math.PI * 2);
+    ctx192.fill();
+    
+    ctx192.beginPath();
+    ctx192.arc(116, 86, 10, 0, Math.PI * 2);
+    ctx192.fill();
+    
+    // 猫鼻子
+    ctx192.fillStyle = '#e53e3e';
+    ctx192.beginPath();
+    ctx192.arc(96, 106, 5, 0, Math.PI * 2);
+    ctx192.fill();
+    
+    // 猫嘴
+    ctx192.strokeStyle = '#3182ce';
+    ctx192.lineWidth = 2;
+    ctx192.beginPath();
+    ctx192.arc(96, 116, 10, 0.2, Math.PI - 0.2);
+    ctx192.stroke();
+    
+    // 猫胡须
+    ctx192.beginPath();
+    ctx192.moveTo(76, 106);
+    ctx192.lineTo(36, 96);
+    ctx192.stroke();
+    
+    ctx192.beginPath();
+    ctx192.moveTo(76, 116);
+    ctx192.lineTo(36, 126);
+    ctx192.stroke();
+    
+    ctx192.beginPath();
+    ctx192.moveTo(116, 106);
+    ctx192.lineTo(156, 96);
+    ctx192.stroke();
+    
+    ctx192.beginPath();
+    ctx192.moveTo(116, 116);
+    ctx192.lineTo(156, 126);
+    ctx192.stroke();
+    
+    // 绘制512x512图标（复制192图标但缩放）
+    const canvas512 = document.getElementById('icon512');
+    const ctx512 = canvas512.getContext('2d');
+    
+    ctx512.scale(512/192, 512/192);
+    ctx512.drawImage(canvas192, 0, 0);
+    
+    // 提示用户保存图像
+    console.log('请右键点击图像并选择"图片另存为..."保存图标');
+  </script>
+</body>
+</html> 

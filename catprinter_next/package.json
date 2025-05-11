@@ -1,0 +1,46 @@
+{
+  "name": "catprinter-next",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "predev": "node fix-env.mjs",
+    "dev": "next dev",
+    "db:migrate": "npx supabase migrate deploy",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint",
+    "clean": "rimraf .next node_modules/.cache",
+    "type-check": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@chakra-ui/icons": "^2.1.1",
+    "@chakra-ui/next-js": "^2.2.0",
+    "@chakra-ui/react": "^2.8.2",
+    "@emotion/react": "^11.11.4",
+    "@emotion/styled": "^11.11.5",
+    "@neondatabase/serverless": "^0.9.0",
+    "@supabase/auth-helpers-nextjs": "^0.9.0",
+    "@supabase/supabase-js": "^2.39.0",
+    "antd": "^5.24.8",
+    "axios": "^1.8.4",
+    "date-fns": "^4.1.0",
+    "dotenv": "^16.5.0",
+    "framer-motion": "^11.2.10",
+    "moment": "^2.30.1",
+    "next": "^14.2.28",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "typeorm": "^0.3.20",
+    "ws": "^8.18.2"
+  },
+  "devDependencies": {
+    "@types/node": "^20.17.32",
+    "@types/react": "^18.2.55",
+    "@types/react-dom": "^18.2.19",
+    "eslint": "^8.56.0",
+    "eslint-config-next": "14.1.0",
+    "rimraf": "^6.0.1",
+    "supabase": "^2.22.12",
+    "typescript": "^5.3.3"
+  }
+}

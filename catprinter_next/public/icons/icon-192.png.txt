@@ -1,0 +1,1 @@
+This is a placeholder file. In a production environment, replace this with a proper 192x192 PNG icon. 
