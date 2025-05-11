@@ -1,6 +1,9 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { db } from '@/lib/supabase';
 import { dbAdmin } from '@/lib/supabase-server';
+import logger from '@/utils/logger';
+
+export const dynamic = 'force-dynamic'; // 禁用缓存，确保每次请求都获取最新数据
 
 export async function GET() {
   try {
@@ -12,7 +15,20 @@ export async function GET() {
     
     if (error) {
       console.error('获取菜品失败:', error);
-      throw error;
+      logger.error('获取菜品数据库错误:', error);
+      return NextResponse.json(
+        { error: `获取菜品失败: ${error.message}` },
+        { status: 500 }
+      );
+    }
+    
+    if (!data || !Array.isArray(data)) {
+      console.error('获取菜品返回数据格式不正确:', data);
+      logger.error('获取菜品数据格式错误:', { data });
+      return NextResponse.json(
+        { error: '获取菜品返回数据格式不正确' },
+        { status: 500 }
+      );
     }
     
     // 数据转换和清理
@@ -53,10 +69,10 @@ export async function GET() {
     console.log(`共获取到 ${formattedData.length} 个菜品（仅活跃状态）`);
     return NextResponse.json(formattedData);
   } catch (error) {
-    console.error('Error fetching dishes:', error);
-    const errorMessage = 'Failed to fetch dishes';
+    console.error('获取菜品列表时发生错误:', error);
+    logger.error('获取菜品列表异常:', error);
     return NextResponse.json(
-      { error: errorMessage, details: error instanceof Error ? error.message : String(error) },
+      { error: `获取菜品列表时发生错误: ${error instanceof Error ? error.message : '未知错误'}` },
       { status: 500 }
     );
   }

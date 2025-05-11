@@ -6,6 +6,8 @@ import logger from '@/utils/logger';
  * 获取打印日志列表
  * GET /api/print-logs
  */
+export const dynamic = 'force-dynamic';
+
 export async function GET(request: NextRequest) {
   try {
     const { searchParams } = request.nextUrl;

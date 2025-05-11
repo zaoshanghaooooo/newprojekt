@@ -6,13 +6,52 @@ import logger from '@/utils/logger';
  * 获取打印日志统计信息
  * GET /api/print-logs/statistics
  */
+export const dynamic = 'force-dynamic';
+
+// 验证日期格式是否有效
+function isValidDateFormat(dateStr: string): boolean {
+  const regex = /^\d{4}-\d{2}-\d{2}$/;
+  return regex.test(dateStr);
+}
+
+// 获取当前日期字符串 YYYY-MM-DD
+function getCurrentDateString(): string {
+  return new Date().toISOString().split('T')[0];
+}
+
 export async function GET(request: NextRequest) {
   try {
     const { searchParams } = request.nextUrl;
     
     // 解析日期范围参数
-    const startDate = searchParams.get('startDate') || new Date().toISOString().split('T')[0]; // 默认为今天
-    const endDate = searchParams.get('endDate') || new Date().toISOString().split('T')[0]; // 默认为今天
+    let startDate = searchParams.get('startDate') || '';
+    let endDate = searchParams.get('endDate') || '';
+    
+    const currentDate = getCurrentDateString();
+    
+    // 验证日期格式，如果无效则使用当前日期
+    if (!isValidDateFormat(startDate) || new Date(startDate).toString() === 'Invalid Date') {
+      logger.warn(`无效的开始日期: ${startDate}，使用当前日期`);
+      startDate = currentDate;
+    }
+    
+    if (!isValidDateFormat(endDate) || new Date(endDate).toString() === 'Invalid Date') {
+      logger.warn(`无效的结束日期: ${endDate}，使用当前日期`);
+      endDate = currentDate;
+    }
+    
+    // 检查日期是否为未来日期，如果是则使用当前日期
+    if (startDate > currentDate) {
+      logger.warn(`开始日期 ${startDate} 是未来日期，使用当前日期`);
+      startDate = currentDate;
+    }
+    
+    if (endDate > currentDate) {
+      logger.warn(`结束日期 ${endDate} 是未来日期，使用当前日期`);
+      endDate = currentDate;
+    }
+    
+    logger.info(`获取统计数据，日期范围: ${startDate} 至 ${endDate}`);
     
     // 构建日期范围（包含结束日期的整天）
     const startDateTime = `${startDate}T00:00:00`;
@@ -25,7 +64,10 @@ export async function GET(request: NextRequest) {
       .gte('created_at', startDateTime)
       .lte('created_at', endDateTime);
     
-    if (ordersError) throw ordersError;
+    if (ordersError) {
+      logger.error('获取订单统计数据失败:', ordersError);
+      throw ordersError;
+    }
     
     // 查询打印日志统计信息
     const { data: printLogs, error: printLogsError } = await supabase
@@ -34,7 +76,10 @@ export async function GET(request: NextRequest) {
       .gte('created_at', startDateTime)
       .lte('created_at', endDateTime);
     
-    if (printLogsError) throw printLogsError;
+    if (printLogsError) {
+      logger.error('获取打印日志统计数据失败:', printLogsError);
+      throw printLogsError;
+    }
     
     // 计算统计结果
     const totalOrders = orders?.length || 0;

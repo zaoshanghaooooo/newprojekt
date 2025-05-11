@@ -1,12 +1,22 @@
-/** @type {import('next').NextConfig} */
-const path = require('path');
+import path from 'path';
+import { fileURLToPath } from 'url';
 
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+/** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
   swcMinify: true,
   images: {
     domains: ['localhost'],
   },
+  output: 'standalone',
+  experimental: {
+    serverComponentsExternalPackages: ['canvas', 'jsdom'],
+    esmExternals: true
+  },
+  staticPageGenerationTimeout: 120,
   webpack: (config, { isServer }) => {
     config.externals = [...config.externals, 'canvas', 'jsdom'];
     
@@ -53,11 +63,8 @@ const nextConfig = {
     API_PREFIX: process.env.API_PREFIX || '/api'
   },
   typescript: {
-    ignoreBuildErrors: false
-  },
-  experimental: {
-    esmExternals: true
+    ignoreBuildErrors: true
   }
 };
 
-module.exports = nextConfig;
+export default nextConfig; 

@@ -1,6 +1,7 @@
 {
-  "buildCommand": "cd catprinter_next && npm run build",
+  "version": 2,
+  "buildCommand": "cd catprinter_next && npm install && npm run build",
   "outputDirectory": "catprinter_next/.next",
   "devCommand": "cd catprinter_next && npm run dev",
-  "installCommand": "cd catprinter_next && npm install"
+  "framework": null
 } 

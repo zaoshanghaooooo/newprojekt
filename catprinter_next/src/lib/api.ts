@@ -209,7 +209,7 @@ export const printOrder = async (orderId: string, printerId?: string): Promise<a
 // 获取所有打印机
 export const fetchPrinters = async (): Promise<Printer[]> => {
   try {
-    const response = await axios.get(`${API_URL}/printers`);
+    const response = await axios.get(`${API_URL}/api/printers`);
     return response.data;
   } catch (error) {
     console.error('获取打印机列表失败:', error);
